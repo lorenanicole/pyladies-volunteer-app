@@ -1,0 +1,84 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+
+<head>
+    <title>{{session['username'] if 'username' in session else 'PyLady'}}'s Schedule</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href ="{{ url_for('static', filename='bootstrap.css') }}" media="screen">
+    <link rel="stylesheet" href = "{{ url_for('static', filename='bootswatch.css') }}">
+</head>
+
+<body>
+    <navbar class="navbar navbar-default navbar-fixed-top">
+        <a href="../" class="navbar-brand">Chicago PyLadies</a>
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            {% if 'username' in session %}
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">My Account<span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><a href="{{ url_for('contact') }}">Contact us</a></li>
+                <!--<li class="divider"></li>-->
+              </ul>
+            </li>
+            {% endif %}
+            {% if 'username' not in session %}
+            <li>
+              <a a href="{{ url_for('signup') }}" method="GET">Sign Up</a>
+            </li>
+            {% endif %}
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+              {% if 'username' in session %}
+              <li><a href="{{ url_for('logout') }}" method="POST">Logout</a></li>
+              {% else %}
+              <li><a href="{{ url_for('login') }}" method="GET">Login</a></li>
+              {% endif %}
+          </ul>
+
+        </div>
+    </navbar>
+    <div class="container">
+        {% if events %}
+        <h3 class="schedule">Volunteer Schedule</h3>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Time (Hours)</th>
+                <th>Role</th>
+            </tr>
+            {% for event in events %}
+            <tr>
+                <td><a href="{{event.event_url}}">{{event.name}}</a></td>
+                <td>{{get_human_readable_date(event.start_time)}}</td>
+                <td>{{event.duration}}</td>
+                <td>dummy</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h3>Whoops - looks like you aren't scheduled to volunteer!</h3>
+        {% endif %}
+    </div>
+
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js">
+    </script>
+    <script src="{{ url_for('static', filename='toggle.js')}}"></script>
+</body>
+</html>

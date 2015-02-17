@@ -1,0 +1,112 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+
+<head>
+    <title>Welcome {{session['username'] if 'username' in session else 'PyLady'}}!!!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href ="{{ url_for('static', filename='bootstrap.css') }}" media="screen">
+    <link rel="stylesheet" href = "{{ url_for('static', filename='bootswatch.css') }}">
+</head>
+
+<body>
+    <navbar class="navbar navbar-default navbar-fixed-top">
+        <a href="../" class="navbar-brand">Chicago PyLadies</a>
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            {% if 'username' in session %}
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">My Account<span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><a href="{{ url_for('volunteer_schedule') }}">My Schedule</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ url_for('contact') }}">Contact us</a></li>
+              </ul>
+            </li>
+            {% endif %}
+            {% if 'username' not in session %}
+            <li>
+              <a a href="{{ url_for('signup') }}" method="GET">Sign Up</a>
+            </li>
+            {% endif %}
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+              {% if 'username' in session %}
+              <li><a href="{{ url_for('logout') }}" method="POST">Logout</a></li>
+              {% else %}
+              <li><a href="{{ url_for('login') }}" method="GET">Login</a></li>
+              {% endif %}
+          </ul>
+
+        </div>
+    </navbar>
+    <div class="container">
+        <div class="page-header" id="banner">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h1 class="welcome">Hi {{session['username'] if 'username' in session else 'PyLady'}}.</h1>
+                    {% if 'username' in session %}
+                        <p class="lead text-left">All scheduled  PyLadies events listed are listed below. To volunteer please RSVP, any questions
+                            <a href="mailto:chicago@pyladies.com">email us</a> or
+                            <a href="http://twitter.com/home/?status=@PyLadiesChicago.+What+type+of+volunteering+help+do+you+need?">Tweet us</a>.</p>
+                    {% else %}
+                        <h2 class="text-left">Want to volunteer at a PyLady event?</h2>
+                        <p class="lead text-left">All scheduled  PyLadies events listed are listed below.
+                        Any questions <a href="mailto:chicago@pyladies.com">email us</a> or
+                        <a href="http://twitter.com/home/?status=@PyLadiesChicago.+What+type+of+volunteering+help+do+you+need?">Tweet us</a>.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if events %}
+        <h3>Upcoming Events</h3>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Time (Hours)</th>
+                <th>Size</th>
+                <th># TAs Needed</th>
+                <th>Volunteer</th>
+            </tr>
+            {% for event in events %}
+            <tr>
+                <td><a href="{{event.event_url}}">{{event.name}}</a></td>
+                <td>{{get_human_readable_date(event.start_time)}}</td>
+                <td>{{event.duration}}</td>
+                <td>{{event.attendee_count}}</td>
+                <td>{{event.attendee_count / 10}}</td>
+                {% if 'username' in session%}
+                    {% if event.meetup_id not in volunteering %}
+                        <td><a class='rsvp' href="{{url_for('rsvp_as_volunteer', user_id=session['user_id'], meetup_id=event.meetup_id)}}">RSVP</a></td>
+                    {% else %}
+                        <td><a class='rsvp' href="{{url_for('rsvp_as_volunteer', user_id=session['user_id'], meetup_id=event.meetup_id)}}"><img src="{{ url_for('static', filename='bold_checkmark_edited.png')}}" style="max-height: 25px"/></a></td>
+                    {% endif %}
+                {% else %}
+                <td></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h3>No events scheduled.</h3>
+        {% endif %}
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js">
+    </script>
+    <script src="{{ url_for('static', filename='toggle.js')}}"></script>
+    <script src="{{ url_for('static', filename='rsvp.js')}}"></script>
+</body>
+</html>
