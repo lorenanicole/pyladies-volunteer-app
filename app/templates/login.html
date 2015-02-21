@@ -40,14 +40,18 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         </div>
     </navbar>
     <div class="container">
-        <div class="col-lg-6 col-md-6 col-md-offset-3 login-form">
-            {% if error %}
-                <div class="error">
-                    <h3><strong>Umm ... Houston we have a problem.</strong></h3>
-                    <h4>{{ error }}</h4>
-                </div>
+        <div class="col-lg-6 col-md-6 col-md-offset-3 form-top-padding">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert">
+            {% for message in messages %}
+                <h3><strong>{{ message[0] }}</strong></h3>
+                <h4>{{ message[1] }}</h4>
+            {% endfor %}
+            </div>
             {% endif %}
-            <h3>Please provide your email and password:</h3>
+            {% endwith %}
+            <h3>Please enter your email &amp; password:</h3>
         </div>
         <div class="row">
                 <div class="well bs-component col-lg-6 col-md-6 col-md-offset-3">
@@ -73,6 +77,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                             </div>
                         </fieldset>
                     </form>
+                    <h5 class="forget"><a href="{{ url_for('reset_password')}}">Forget your password?</a></h5>
                 </div>
                 </div>
     </div>

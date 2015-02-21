@@ -10,4 +10,4 @@ MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 
 # administrator list
-ADMINS = ['test@test.com']
+ADMINS = ['chicago@pyladies.com', 'me@lorenamesa.com']

@@ -52,42 +52,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             <h3 style="color: red;">{{error[0].capitalize()}}: {{error[1][0]}}</h3>
         {% endfor %}
         <div class="col-lg-9 col-md-9 col-md-offset-2 form-top-padding">
-            <h2>Contact Us</h2>
-            <h4>Have an idea for a talk? Want to sponsor us? Drop us a line!</h4>
-        <form action="{{ url_for('contact') }}" class=".form-horizontal" method=post>
-        <div class="form-group">
-            {{ form.hidden_tag() }}
-            {{ form.name.label(class_='col-sm-6 control-label') }}
-        <div class="col-sm-10">
-            {{ form.name(class_='form-control contact') }}
-        </div>
-        </div>
+            <div class="error">
+            </div>
+            <h2>Please enter the email for your account:</h2>
+        <form action="{{ url_for('reset_password', token=token) }}" class=".form-horizontal" method="POST">
         <div class="form-group">
             {{ form.hidden_tag() }}
             {{ form.email.label(class_='col-sm-6 control-label') }}
         <div class="col-sm-10">
             {{ form.email(class_='form-control contact') }}
-        </div>
-        </div>
-        <div class="form-group">
-            {{ form.hidden_tag() }}
-            {{ form.subject.label(class_='col-sm-6 control-label') }}
-        <div class="col-sm-10">
-            {{ form.subject(class_='form-control contact') }}
-        </div>
-        </div>
-        <div class="form-group">
-            {{ form.hidden_tag() }}
-            {{ form.message.label(class_='col-sm-6 control-label') }}
-        <div class="col-sm-10">
-            {{ form.message(class_='form-control contact', rows='7') }}
-        </div>
-        </div>
-        <div class="form-group">
-            {{ form.hidden_tag() }}
-            {{ form.type.label(class_='col-sm-6 control-label') }}
-        <div class="col-sm-10">
-            {{ form.type(class_='form-control contact') }}
         </div>
         </div>
         <div class="form-group">
@@ -98,13 +71,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         </form>
         </div>
     </div>
-
-
-
-
-
-
-
     <script src="https://code.jquery.com/jquery-1.10.2.min.js">
     </script>
     <script src="{{ url_for('static', filename='toggle.js')}}"></script>

@@ -175,17 +175,20 @@ footer p {
 
 /***************************
 ****************************
-Login Form CSS
+Form Header Text CSS
 ****************************
 ***************************/
 
-.login-form {
+.form-top-padding {
     padding-top: 10%;
 }
 
-.error {
-    text-align: center;
-    padding-bottom: 5%;
+.form-top-padding h2, h4 {
+    padding-left: 2%;
+}
+
+.form-top-margin {
+    padding-left: 17%;
 }
 
 /***************************
@@ -206,4 +209,26 @@ Contact Form CSS
 
 .contact {
     margin-bottom: 2%;
+}
+
+/***************************
+****************************
+Alert Message CSS
+****************************
+***************************/
+
+.alert {
+    text-align: center;
+    padding-bottom: 5%;
+}
+
+/***************************
+****************************
+Forget Password on Login CSS
+****************************
+***************************/
+
+.forget {
+    margin-top: -2%;
+    float: right;
 }

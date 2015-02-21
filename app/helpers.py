@@ -1,6 +1,5 @@
 import pytz
 import requests
-from app import db
 from settings import MEETUP_KEY, MEETUP_GROUP_URLNAME
 import json
 

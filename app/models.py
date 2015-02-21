@@ -1,5 +1,7 @@
-from sqlalchemy import PrimaryKeyConstraint
-from app import db
+import urllib
+from itsdangerous import Serializer
+from sqlalchemy import PrimaryKeyConstraint, text
+from app import db, app
 from app.emails import send_email
 from app.helpers import get_human_readable_date
 from app.settings import ADMINS
@@ -47,6 +49,20 @@ class User(db.Model):
             self.events.remove(event)
             db.session.commit()
 
+    def get_token(self, expiration=1800):
+        s = Serializer(app.secret_key)
+        return s.dumps(self.id).decode('utf-8')
+
+    @staticmethod
+    def verify_token(token):
+        s = Serializer(app.secret_key)
+        try:
+            id = s.loads(token)
+        except:
+            return None
+        if id:
+            return User.query.get(id)
+        return None
 
 class Event(db.Model):
     __tablename__ = 'events'
@@ -69,6 +85,22 @@ class Event(db.Model):
     def __repr__(self):
         return '<Event {0} {1}>'.format(self.meetup_id, self.name)
 
+    @property
+    def total_volunteers(self):
+        return self.attendee_count / 10
+
+    @property
+    def num_volunteers(self):
+        sql = "SELECT * FROM volunteer_schedule WHERE meetup_id = {0}".format(self.meetup_id)
+        return len(db.session.query(volunteer_schedule).from_statement(text(sql)).all())
+
+    def need_more_volunteers(self):
+        return self.num_volunteers > self.total_volunteers
+
+    @property
+    def num_volunteers_needed(self):
+        return self.total_volunteers - self.num_volunteers
+
 class RegistrationEmail(object):
     def __init__(self, recipient, recipient_email, event, venue_name, address):
         self.recipient = recipient
@@ -76,6 +108,7 @@ class RegistrationEmail(object):
         self.event = event
         self.venue_name = venue_name
         self.address = address
+        self.url_escaped_address = urllib.quote_plus(self.address)
         self.html_text = self.build_html_text()
 
     def build_html_text(self):
@@ -84,8 +117,10 @@ class RegistrationEmail(object):
                          '</b>{4}, {5}<br><br>'.format(self.recipient, self.event.event_url, self.event.name,
                                                 get_human_readable_date(self.event.start_time), self.venue_name, self.address)
         location_text = '<a href="https://www.google.com/maps/place/{0}">' \
-                             '<img src="https://maps.googleapis.com/maps/api/staticmap?center={1}&zoom=14&size=300x300" /></a>'\
-                             .format(self.address, self.address)
+                        '<img src="https://maps.googleapis.com/maps/api/staticmap?center={1}&zoom=14&size=300x300&markers=size:large|color:0xF9043C|label:P|{2}" /></a>'\
+                        .format(self.url_escaped_address, self.url_escaped_address, self.url_escaped_address)
+
+        print location_text
         closing_text = '<br><br>Please arrive at least fifteen minutes in advance. Any questions email or ' \
                             '<a href="http://twitter.com/home/?status=@PyLadiesChicago+help+re:{0}">Tweet us.</a> ' \
                             'We look forward to seeing you at the event.<br><br>Thanks for all you do! ' \
@@ -114,3 +149,4 @@ class DeregistrationEmail(object):
                    html_body= "You've successfully unregistered to volunteer for <a href='{0}'>{1}</a>."
                               "<br>Hope to see you at another event soon!<br><br>Catherine, Celeen, Lorena, & Safia<br><br><br>" \
                               "<img src='http://i.imgur.com/TddsutV.png' style='max-height:100px;' />".format(self.event.event_url, self.event.name))
+

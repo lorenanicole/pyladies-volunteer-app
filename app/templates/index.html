@@ -50,6 +50,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     </navbar>
     <div class="container">
         <div class="page-header" id="banner">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert">
+            {% for message in messages %}
+              <h4>{{ message }}</h4>
+            {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <h1 class="welcome">Hi {{session['username'] if 'username' in session else 'PyLady'}}.</h1>
@@ -72,9 +81,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             <tr>
                 <th>Name</th>
                 <th>Date</th>
-                <th>Time (Hours)</th>
-                <th>Size</th>
-                <th># TAs Needed</th>
+                <th>Length (Hours)</th>
+                <th>Max Size</th>
+                <th>Num Vol. Need</th>
                 <th>Volunteer</th>
             </tr>
             {% for event in events %}
@@ -83,7 +92,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                 <td>{{get_human_readable_date(event.start_time)}}</td>
                 <td>{{event.duration}}</td>
                 <td>{{event.attendee_count}}</td>
-                <td>{{event.attendee_count / 10}}</td>
+                <td class="volunteer_qty">{{event.num_volunteers_needed}}</td>
                 {% if 'username' in session%}
                     {% if event.meetup_id not in volunteering %}
                         <td><a class='rsvp' href="{{url_for('rsvp_as_volunteer', user_id=session['user_id'], meetup_id=event.meetup_id)}}">RSVP</a></td>

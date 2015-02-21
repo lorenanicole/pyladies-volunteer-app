@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////" + os.path.join(app.root_pa
 db = SQLAlchemy(app)
 
 
-app.secret_key = 'SuperSecretThings'
+app.secret_key = 'efb91742-b70a-11e4-807c-7831c1c5d006'
 app.config['MAIL_SERVER'] = settings.MAIL_SERVER
 app.config['MAIL_PORT'] = settings.MAIL_PORT
 app.config['MAIL_USERNAME'] = settings.MAIL_USERNAME
@@ -26,12 +26,6 @@ app.config['ADMINS'] = settings.ADMINS
 
 app.config.from_object(__name__) # adds config setting
 mail = Mail(app)
-
-# @app.cli.command('initdb')
-# def initdb_command():
-#     """Creates the database tables."""
-#     init_db()
-#     print('Initialized the database.')
 
 ## CONTENT PROCESSOR
 

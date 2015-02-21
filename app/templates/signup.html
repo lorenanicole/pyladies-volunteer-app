@@ -37,53 +37,63 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         </div>
     </navbar>
     <div class="container">
-  <div class="col-lg-6 col-md-6 col-md-offset-3 login-form">
-    {% if error %}
-      <div class="error">
-          <h3><strong>Umm ... Houston we have a problem.</strong></h3>
-          <h4>{{ error }}</h4>
-      </div>
-    {% endif %}
-    <h3>Sign Up for PyLadies:</h3>
-  </div>
-  <div class="well bs-component col-lg-6 col-md-6 col-md-offset-3">
-    <form class="form-horizontal" action="{{ url_for('signup') }}" method="post">
-      <fieldset>
-        <div class="form-group">
-          <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-          <div class="col-lg-10">
-            <input type="text" name="email" class="form-control" id="inputEmail" placeholder="Email">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-          <div class="col-lg-10">
-            <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputFirstName" class="col-lg-2 control-label">First Name</label>
-          <div class="col-lg-10">
-            <input type="text" name="first_name" class="form-control" id="inputFirstName" placeholder="First Name">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputLastName" class="col-lg-2 control-label">Last Name</label>
-          <div class="col-lg-10">
-            <input type="text" name="last_name" class="form-control" id="inputLastName" placeholder="Last Name">
-          </div>
-        </div>
-        <div class="form-group">
-            <div class="col-lg-10 col-lg-offset-2">
-                <button class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-top-padding">
+            {% for error in form.errors.items() %}
+                <h3 style="color: red; text-align: center;">{{error[0].capitalize()}}: {{error[1][0]}}</h3>
+            {% endfor %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert">
+            {% for message in messages %}
+                <h3><strong>{{ message[0] }}</strong></h3>
+                {% if message[1] %}
+                <h4>{{ message[1] }}</h4>
+                {% endif %}
+            {% endfor %}
             </div>
+            {% endif %}
+            {% endwith %}
+            <h3 class="col-lg-6 col-md-6 col-md-offset-2">Sign Up:</h3>
         </div>
-      </fieldset>
-    </form>
-    <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
+        <div class="well bs-component col-lg-8 col-md-8 col-md-offset-2" style="height: 100%;">
+        <form class=".form-horizontal" action="{{ url_for('signup') }}" method="post">
+            <div class="form-group">
+                {{ form.hidden_tag() }}
+                {{ form.first_name.label(class_='col-sm-6 control-label') }}
+            <div class="col-sm-11">
+                {{ form.first_name(class_='form-control contact') }}
+            </div>
+            </div>
+            <div class="form-group">
+                {{ form.hidden_tag() }}
+                {{ form.last_name.label(class_='col-sm-6 control-label') }}
+            <div class="col-sm-11">
+                {{ form.last_name(class_='form-control contact') }}
+            </div>
+            </div>
+            <div class="form-group">
+                {{ form.hidden_tag() }}
+                {{ form.email.label(class_='col-sm-6 control-label') }}
+            <div class="col-sm-11">
+                {{ form.email(class_='form-control contact') }}
+            </div>
+            </div>
+            <div class="form-group">
+                {{ form.hidden_tag() }}
+                {{ form.password.label(class_='col-sm-6 control-label') }}
+            <div class="col-sm-11">
+                {{ form.password(class_='form-control contact') }}
+            </div>
+            </div>
+            <div class="form-group">
+            <div class="col-sm col-sm-11">
+                {{ form.submit(class_='btn btn-default btn-lg pull-right') }}
+            </div>
+            </div>
+        </form>
+        <div class="clear" style="clear: both"></div>
+        </div>
     </div>
-  </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js">
     </script>
     <script src="{{ url_for('static', filename='toggle.js')}}"></script>
