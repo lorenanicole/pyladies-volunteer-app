@@ -54,4 +54,13 @@ def time_processor():
         return time_in_milliseconds / 3600000
     return dict(get_num_of_hours=get_num_of_hours)
 
+@app.context_processor
+def admin_processor():
+    def is_user_admin(email):
+        # output = 'yes' if email in app.config['ADMINS'] else 'no'
+        # print output
+        print email in app.config['ADMINS']
+        return email in app.config['ADMINS']
+    return dict(is_user_admin=is_user_admin)
+
 from app import views

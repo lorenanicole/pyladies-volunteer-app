@@ -71,6 +71,24 @@ def signup():
 
     return render_template("signup.html", form=form)
 
+@app.route('/admin_dashboard')
+def admin_dashboard():
+    if session.get('email') not in app.config['ADMINS']:
+        return redirect(url_for('index'))
+    events = Event.query.filter(Event.start_time >= int(datetime.utcnow().strftime("%s"))).all()
+    if events:
+        events = sorted(events, key=lambda e: e.start_time) # Sort events based on start time
+
+    return render_template("admin_dashboard.html", events=events)
+
+@app.route('/<int:meetup_id>/volunteers')
+def event_volunteers(meetup_id):
+    if session.get('email') not in app.config['ADMINS']:
+        return redirect(url_for('index'))
+    event = Event.query.get(meetup_id)
+    users = event.get_volunteers()
+    return render_template("event_volunteer_list.html", event=event, users=users)
+
 @app.route('/schedule', methods=['GET'])
 def volunteer_schedule():
     if not 'user_id' in session:

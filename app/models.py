@@ -101,6 +101,13 @@ class Event(db.Model):
     def num_volunteers_needed(self):
         return self.total_volunteers - self.num_volunteers
 
+    def get_volunteers(self):
+        sql = "SELECT * FROM volunteer_schedule WHERE meetup_id = {0}".format(self.meetup_id)
+        volunteers = db.session.query(volunteer_schedule).from_statement(text(sql)).all()
+        user_ids = [user_id for (user_id, meetup_id) in volunteers]
+        return User.query.filter(User.id.in_(user_ids)).all()
+
+
 class RegistrationEmail(object):
     def __init__(self, recipient, recipient_email, event, venue_name, address):
         self.recipient = recipient

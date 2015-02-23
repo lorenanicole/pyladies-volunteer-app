@@ -5,7 +5,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <html>
 
 <head>
-    <title>{{session['username'] if 'username' in session else 'PyLady'}}'s Schedule</title>
+    <title>{{event.name}} Volunteers</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href ="{{ url_for('static', filename='bootstrap.css') }}" media="screen">
     <link rel="stylesheet" href = "{{ url_for('static', filename='bootswatch.css') }}">
@@ -14,26 +14,22 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <body>
     {% include 'navbar.html' %}
     <div class="container">
-        {% if events %}
-        <h3 class="schedule">Volunteer Schedule</h3>
+        <h3 class="schedule">{{event.name}} Volunteers</h3>
+        {% if users %}
         <table class="table">
             <tr>
                 <th>Name</th>
-                <th>Date</th>
-                <th>Time (Hours)</th>
-                <th>Role</th>
+                <th>Email</th>
             </tr>
-            {% for event in events %}
+            {% for user in users %}
             <tr>
-                <td><a href="{{event.event_url}}">{{event.name}}</a></td>
-                <td>{{get_human_readable_date(event.start_time)}}</td>
-                <td>{{event.duration}}</td>
-                <td>dummy</td>
+                <td>{{user.first_name}} {{user.last_name}}</td>
+                <td>{{user.email}}</td>
             </tr>
             {% endfor %}
         </table>
         {% else %}
-        <h3>Whoops - looks like you aren't scheduled to volunteer!</h3>
+        <h3>No volunteers have registered yet.</h3>
         {% endif %}
     </div>
 
