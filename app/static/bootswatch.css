@@ -175,6 +175,28 @@ footer p {
 
 /***************************
 ****************************
+Mobile Navbar Options
+****************************
+***************************/
+
+.navbar-mobile {
+    display: none;
+    background: #ff5c5c;
+}
+
+.navbar-mobile a {
+    color: white;
+}
+
+.navbar-mobile a:hover {
+    color: black;
+}
+
+.show {
+    display: block;
+}
+/***************************
+****************************
 Form Header Text CSS
 ****************************
 ***************************/

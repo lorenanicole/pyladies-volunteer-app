@@ -95,7 +95,7 @@ class Event(db.Model):
         return len(db.session.query(volunteer_schedule).from_statement(text(sql)).all())
 
     def need_more_volunteers(self):
-        return self.num_volunteers > self.total_volunteers
+        return not self.num_volunteers == self.total_volunteers
 
     @property
     def num_volunteers_needed(self):
@@ -120,7 +120,6 @@ class RegistrationEmail(object):
                         '<img src="https://maps.googleapis.com/maps/api/staticmap?center={1}&zoom=14&size=300x300&markers=size:large|color:0xF9043C|label:P|{2}" /></a>'\
                         .format(self.url_escaped_address, self.url_escaped_address, self.url_escaped_address)
 
-        print location_text
         closing_text = '<br><br>Please arrive at least fifteen minutes in advance. Any questions email or ' \
                             '<a href="http://twitter.com/home/?status=@PyLadiesChicago+help+re:{0}">Tweet us.</a> ' \
                             'We look forward to seeing you at the event.<br><br>Thanks for all you do! ' \

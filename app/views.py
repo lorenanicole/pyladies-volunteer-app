@@ -116,19 +116,23 @@ def rsvp_as_volunteer(user_id, meetup_id):
         user.remove_event(meetup_id)
         deregistration_email = DeregistrationEmail(recipient_email=user.email, event=volunteer_event)
         deregistration_email.send()
+        return jsonify({'volunteering': 'no',
+                        'volunteers_needed': event.num_volunteers_needed,
+                        'event_full': not event.need_more_volunteers()})
 
-        return jsonify({'volunteering': 'no', 'volunteers_needed': event.num_volunteers_needed})
-
-    if not volunteer_event and not event.need_more_volunteers():
+    if event.need_more_volunteers():
         user.add_event(meetup_id)
         address, name = get_meetup_address(meetup_id)
         confirmation_email = RegistrationEmail(recipient=user.first_name, recipient_email=user.email,
                                                event=user.get_event(meetup_id), venue_name=name, address=address)
         confirmation_email.send()
-
         return jsonify({'volunteering': 'yes',
-                        'event_full': event.need_more_volunteers(),
+                        'event_full': not event.need_more_volunteers(),
                         'volunteers_needed': event.num_volunteers_needed})
+    else:
+        return jsonify({'volunteering': 'no',
+                'event_full': not event.need_more_volunteers(),
+                'volunteers_needed': event.num_volunteers_needed})
 
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():

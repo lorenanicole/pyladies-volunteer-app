@@ -21,7 +21,6 @@ PySide==1.2.2
 pytz==2014.10
 redis==2.10.3
 requests==2.5.1
-rq==0.5.0
 rsa==3.1.4
 simplejson==3.6.5
 six==1.9.0

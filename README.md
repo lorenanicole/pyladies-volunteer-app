@@ -1,7 +1,7 @@
 ##Overview
 ![Imgur](http://i.imgur.com/TddsutV.png =300x)
 
-The PyLadies Chicago Volunteer App is a Flask app using (Flask-SQLAlchemy extension) SQLAlchemy ORM.
+The PyLadies Chicago Volunteer App is a Flask 0.10 app using (Flask-SQLAlchemy extension) SQLAlchemy ORM.
 
 ###Environment Setup
 
@@ -13,18 +13,6 @@ source pyladies-env/bin/activate
 cd pyladies-volunteer-app
 pip install -r requirements.txt
 ```
-
-This app was written with the latest flavor of Flask, 0.11dev. To acquire this version you can follow the [Living on the Edge](http://flask.readthedocs.org/en/latest/installation/#installation) instructions. Please note that <b>pip</b> does not have the development version code available.
-
-You'll need to have your virtualenv use the latest code on the Git repo:
-
-```
-git clone http://github.com/mitsuhiko/flask.git
-virtualenv pyladies-env
-cd flask
-python setup.py develop
-# Watch the magic happen
-``` 
 
 ###To Run Locally
 
