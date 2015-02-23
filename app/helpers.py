@@ -1,6 +1,6 @@
 import pytz
 import requests
-from settings import MEETUP_KEY, MEETUP_GROUP_URLNAME
+from config import MEETUP_KEY, MEETUP_GROUP_URLNAME
 import json
 
 from datetime import datetime

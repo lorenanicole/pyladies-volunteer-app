@@ -1,7 +1,7 @@
 import datetime
 import pytz
 from sqlalchemy import PrimaryKeyConstraint
-import settings
+import config
 
 __author__ = 'lorenamesa'
 
@@ -16,13 +16,13 @@ db = SQLAlchemy(app)
 
 
 app.secret_key = 'efb91742-b70a-11e4-807c-7831c1c5d006'
-app.config['MAIL_SERVER'] = settings.MAIL_SERVER
-app.config['MAIL_PORT'] = settings.MAIL_PORT
-app.config['MAIL_USERNAME'] = settings.MAIL_USERNAME
-app.config['MAIL_PASSWORD'] = settings.MAIL_PASSWORD
-app.config['MAIL_USE_TLS'] = settings.MAIL_USE_TLS
-app.config['MAIL_USE_SSL'] = settings.MAIL_USE_SSL
-app.config['ADMINS'] = settings.ADMINS
+app.config['MAIL_SERVER'] = config.MAIL_SERVER
+app.config['MAIL_PORT'] = config.MAIL_PORT
+app.config['MAIL_USERNAME'] = config.MAIL_USERNAME
+app.config['MAIL_PASSWORD'] = config.MAIL_PASSWORD
+app.config['MAIL_USE_TLS'] = config.MAIL_USE_TLS
+app.config['MAIL_USE_SSL'] = config.MAIL_USE_SSL
+app.config['ADMINS'] = config.ADMINS
 
 app.config.from_object(__name__) # adds config setting
 mail = Mail(app)
@@ -57,9 +57,6 @@ def time_processor():
 @app.context_processor
 def admin_processor():
     def is_user_admin(email):
-        # output = 'yes' if email in app.config['ADMINS'] else 'no'
-        # print output
-        print email in app.config['ADMINS']
         return email in app.config['ADMINS']
     return dict(is_user_admin=is_user_admin)
 

@@ -4,7 +4,7 @@ from sqlalchemy import PrimaryKeyConstraint, text
 from app import db, app
 from app.emails import send_email
 from app.helpers import get_human_readable_date
-from app.settings import ADMINS
+from app.config import ADMINS
 
 volunteer_schedule = db.Table('volunteer_schedule',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
